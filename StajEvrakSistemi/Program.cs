@@ -1,7 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using StajEvrakSistemi.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// veritabanı olarak SQLite kullanıyoruz, staj.db dosyası proje klasöründe oluşacak
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=staj.db"));
 
 var app = builder.Build();
 
