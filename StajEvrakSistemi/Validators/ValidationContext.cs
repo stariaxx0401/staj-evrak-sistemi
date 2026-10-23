@@ -6,4 +6,6 @@ public class ValidationContext
 {
     public string TcKimlikNo { get; set; } = "";
     public string Uyruk { get; set; } = "T.C.";
+    public string Telefon { get; set; } = "";
+    public string Eposta { get; set; } = "";
 }
