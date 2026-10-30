@@ -1,0 +1,26 @@
+﻿@*@* bu sayfaya LoginViewModel gelecek, form alanları ona bağlı *@
+@model StajEvrakSistemi.Models.LoginViewModel
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <h2 class="mb-3">Giriş Yap</h2>
+
+        @* method="post": form gönderilince şifre adrese yazılmasın diye *@
+        <form method="post">
+            @* hata mesajları burada çıkacak, backend kısmı eklenince çalışır *@
+            <div asp-validation-summary="All" class="text-danger mb-2"></div>
+
+            <div class="mb-3">
+                @* asp-for: alanı modeldeki Email özelliğine bağlıyor *@
+                <label asp-for="Email" class="form-label">E-posta</label>
+                <input asp-for="Email" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Şifre</label>
+                @* type="password": yazılanlar ekranda nokta olarak görünsün *@
+                <input asp-for="Password" type="password" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Giriş</button>
+        </form>
+    </div>
+</div>
