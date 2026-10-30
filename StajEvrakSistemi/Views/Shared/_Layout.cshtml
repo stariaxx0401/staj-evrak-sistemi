@@ -26,6 +26,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @* menüye yeni sayfaların bağlantıları, rol bazlı gizleme sonra eklenecek *@
+                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Student" asp-action="Index">Öğrenci</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Giriş</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Çıkış</a></li>
                     </ul>
                 </div>
             </div>

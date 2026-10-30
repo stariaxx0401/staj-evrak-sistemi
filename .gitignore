@@ -429,3 +429,5 @@ FodyWeavers.xsd
 
 # Veri tabanı dosyası repoya girmemesi için eklenmiştir.
 *.db
+*.db-shm
+*.db-wal
