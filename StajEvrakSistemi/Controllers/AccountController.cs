@@ -68,8 +68,12 @@ public class AccountController : Controller
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
             new ClaimsPrincipal(kimlik));
 
-        return RedirectToAction("Index", "Home");
-    }
+        // admin kendi paneline, öğrenci kendi paneline gidiyor
+        if (user.Role == "ROLE_ADMIN")
+            return RedirectToAction("Index", "Admin");
+
+        return RedirectToAction("Index", "Student");
+    } 
 
     // her denemeyi tabloya yazıyor, başarılı ve başarısız ayrımı Success alanında
     private void LogKaydet(string email, bool basarili)
@@ -89,5 +93,12 @@ public class AccountController : Controller
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Login");
+
+    }
+    // yetkisiz erişimde çalışıyor, 403 kodu döndürüp bilgi sayfasını gösteriyor
+    public IActionResult AccessDenied()
+    {
+        Response.StatusCode = 403;
+        return View();
     }
 }

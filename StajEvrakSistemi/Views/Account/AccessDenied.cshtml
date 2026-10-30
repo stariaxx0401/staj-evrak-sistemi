@@ -1,0 +1,10 @@
+﻿@* yetkisiz kullanıcı burada 403 sayfasını görüyor, birkaç saniye sonra login'e yönleniyor *@
+<h2>403 - Bu sayfaya erişim yetkiniz yok</h2>
+<p>Giriş sayfasına yönlendiriliyorsunuz...</p>
+<a asp-action="Login">Hemen giriş sayfasına git</a>
+
+@section Scripts {
+    <script>
+        setTimeout(function () { window.location.href = "/Account/Login"; }, 3000);
+    </script>
+}

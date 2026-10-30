@@ -12,7 +12,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // giriş için cookie kullanıyoruz, giriş yapmayan kişi login sayfasına gidiyor
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options => options.LoginPath = "/Account/Login");
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";           // giriş yapmayan buraya yönleniyor
+        options.AccessDeniedPath = "/Account/AccessDenied"; // yetkisiz rol buraya yönleniyor
+    });
 
 var app = builder.Build();
 
