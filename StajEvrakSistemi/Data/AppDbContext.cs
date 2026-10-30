@@ -12,4 +12,6 @@ public class AppDbContext : DbContext
     public DbSet<AppUser> Users => Set<AppUser>();
     public DbSet<Student> Students => Set<Student>();
     public DbSet<AdminUser> Admins => Set<AdminUser>();
+
+    public DbSet<LoginAttempt> LoginAttempts => Set<LoginAttempt>();
 }
