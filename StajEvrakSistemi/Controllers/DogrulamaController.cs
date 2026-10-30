@@ -30,21 +30,23 @@ public class DogrulamaController: Controller
     }
 
     // hepsini tek listede çalıştırıyoruz, her biri kendi Validate'ini çağırıyor (çok biçimlilik)
-    public IActionResult TestHepsi(string tc, string uyruk = "T.C.", string tel = "", string eposta = "")
+    public IActionResult TestHepsi(string tc, string uyruk = "T.C.", string tel = "", string eposta = "", string adres = "")
     {
         var ctx = new ValidationContext
         {
             TcKimlikNo = tc ?? "",
             Uyruk = uyruk,
             Telefon = tel,
-            Eposta = eposta
+            Eposta = eposta,
+            Adres = adres
         };
 
         var dogrulayicilar = new List<BaseValidator>
     {
         new TcKimlikValidator(),
         new TelefonValidator(),
-        new EpostaValidator()
+        new EpostaValidator(),
+        new AdresValidator()
     };
 
         var hatalar = new List<string>();
