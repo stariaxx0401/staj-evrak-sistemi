@@ -3,7 +3,7 @@ using StajEvrakSistemi.Models.Entities;
 
 namespace StajEvrakSistemi.Data;
 
-// veritabanıyla konuşan sınıf, DbSet'ler tablolara karşılık geliyor
+// veritabanıyla konuşan sınıf, DbSet'ler tablolara karşılık geliyoor
 public class AppDbContext : DbContext
 {
     // ayarlar (hangi veritabanı vs.) Program.cs'ten buraya geliyor
