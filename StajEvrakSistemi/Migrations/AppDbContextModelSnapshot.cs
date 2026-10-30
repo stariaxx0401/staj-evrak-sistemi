@@ -55,6 +55,30 @@ namespace StajEvrakSistemi.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("StajEvrakSistemi.Models.Entities.LoginAttempt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("AttemptedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Success")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LoginAttempts");
+                });
+
             modelBuilder.Entity("StajEvrakSistemi.Models.Entities.AdminUser", b =>
                 {
                     b.HasBaseType("StajEvrakSistemi.Models.Entities.AppUser");

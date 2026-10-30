@@ -1,9 +1,10 @@
-﻿using System.Security.Claims;
+﻿using StajEvrakSistemi.Models.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using StajEvrakSistemi.Data;
 using StajEvrakSistemi.Models;
+using System.Security.Claims;
 
 namespace StajEvrakSistemi.Controllers;
 
@@ -31,6 +32,7 @@ public class AccountController : Controller
         // kullanıcı yoksa hangisinin yanlış olduğunu söylemiyoruz
         if (user == null)
         {
+            LogKaydet(model.Email, false);
             ModelState.AddModelError("", "E-posta veya şifre hatalı.");
             return View(model);
         }
@@ -38,6 +40,7 @@ public class AccountController : Controller
         // 5 hatadan sonra hesap kilitli
         if (user.IsLocked())
         {
+            LogKaydet(model.Email, false);
             ModelState.AddModelError("", "Çok fazla hatalı deneme, hesap geçici olarak kilitlendi.");
             return View(model);
         }
@@ -46,24 +49,39 @@ public class AccountController : Controller
         {
             user.RegisterFailedLogin();
             _db.SaveChanges();
+            LogKaydet(model.Email, false);
             ModelState.AddModelError("", "E-posta veya şifre hatalı.");
             return View(model);
         }
 
         user.ResetFailedLogins();
         _db.SaveChanges();
+        LogKaydet(model.Email, true);
 
         // rol bilgisini cookie'nin içine koyuyoruz
         var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, user.Email),
-            new Claim(ClaimTypes.Role, user.Role)
-        };
+    {
+        new Claim(ClaimTypes.Name, user.Email),
+        new Claim(ClaimTypes.Role, user.Role)
+    };
         var kimlik = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
             new ClaimsPrincipal(kimlik));
 
         return RedirectToAction("Index", "Home");
+    }
+
+    // her denemeyi tabloya yazıyor, başarılı ve başarısız ayrımı Success alanında
+    private void LogKaydet(string email, bool basarili)
+    {
+        _db.LoginAttempts.Add(new LoginAttempt
+        {
+            Email = email ?? "",
+            Success = basarili,
+            AttemptedAt = DateTime.UtcNow,
+            IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString()
+        });
+        _db.SaveChanges();
     }
 
     // çıkış yapınca cookie siliniyor
