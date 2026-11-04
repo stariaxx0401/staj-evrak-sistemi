@@ -55,6 +55,80 @@ namespace StajEvrakSistemi.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("StajEvrakSistemi.Models.Entities.InternshipDocument", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Adres")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Eposta")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MuhendisBolumu")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("MuhendisSayisi")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("OgrenciAdSoyad")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OgretimYili")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("StajBaslangic")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("StajBitis")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TcKimlikNo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Telefon")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Uyruk")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Documents");
+                });
+
             modelBuilder.Entity("StajEvrakSistemi.Models.Entities.LoginAttempt", b =>
                 {
                     b.Property<int>("Id")
@@ -77,6 +151,52 @@ namespace StajEvrakSistemi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LoginAttempts");
+                });
+
+            modelBuilder.Entity("StajEvrakSistemi.Models.Entities.ValidationIssue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FieldName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ReportId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ValidationReportId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ValidationReportId");
+
+                    b.ToTable("ValidationIssues");
+                });
+
+            modelBuilder.Entity("StajEvrakSistemi.Models.Entities.ValidationReport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DocumentId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentId");
+
+                    b.ToTable("ValidationReports");
                 });
 
             modelBuilder.Entity("StajEvrakSistemi.Models.Entities.AdminUser", b =>
@@ -133,6 +253,40 @@ namespace StajEvrakSistemi.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasDiscriminator().HasValue("Student");
+                });
+
+            modelBuilder.Entity("StajEvrakSistemi.Models.Entities.InternshipDocument", b =>
+                {
+                    b.HasOne("StajEvrakSistemi.Models.Entities.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("StajEvrakSistemi.Models.Entities.ValidationIssue", b =>
+                {
+                    b.HasOne("StajEvrakSistemi.Models.Entities.ValidationReport", null)
+                        .WithMany("Issues")
+                        .HasForeignKey("ValidationReportId");
+                });
+
+            modelBuilder.Entity("StajEvrakSistemi.Models.Entities.ValidationReport", b =>
+                {
+                    b.HasOne("StajEvrakSistemi.Models.Entities.InternshipDocument", "Document")
+                        .WithMany()
+                        .HasForeignKey("DocumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Document");
+                });
+
+            modelBuilder.Entity("StajEvrakSistemi.Models.Entities.ValidationReport", b =>
+                {
+                    b.Navigation("Issues");
                 });
 #pragma warning restore 612, 618
         }
