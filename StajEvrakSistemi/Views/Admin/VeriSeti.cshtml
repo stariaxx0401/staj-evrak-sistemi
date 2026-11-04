@@ -1,2 +1,26 @@
-﻿@* içini veri seti yükleme kodu gelince dolduracağız *@
-<h2>Veri Seti Yükle</h2>
+﻿<h2>Veri Seti Yükle</h2>
+
+<p>
+    CSV dosyasının ilk satırı başlık olmalı. Sütun sırası: ad soyad, TC kimlik no, uyruk,
+    öğrenci no, doğum tarihi, adres, bölüm, Ek-16 teslim yılı, önceki staj gün sayısı,
+    e-posta, telefon, sağlık yardımı statüsü.
+</p>
+
+<div class="row">
+    <div class="col-md-6">
+        @* enctype="multipart/form-data": dosya göndermek için şart *@
+        <form method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                @* name="dosya": AdminController'daki parametre adıyla aynı olmalı *@
+                <input type="file" name="dosya" class="form-control" accept=".csv" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Yükle</button>
+        </form>
+
+        @* yükleme sonucu (kaç öğrenci eklendi vs.) burada görünüyor *@
+        @if (TempData["Mesaj"] != null)
+        {
+            <div class="alert alert-info mt-3">@TempData["Mesaj"]</div>
+        }
+    </div>
+</div>
