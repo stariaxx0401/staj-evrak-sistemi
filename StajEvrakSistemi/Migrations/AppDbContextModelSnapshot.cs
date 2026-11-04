@@ -105,12 +105,20 @@ namespace StajEvrakSistemi.Migrations
                     b.Property<DateTime>("DogumTarihi")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Ek16TeslimYili")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("OgrenciNo")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("OncekiStajGunSayisi")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("SaglikYardimiStatusu")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("TcKimlikNo")
                         .IsRequired()

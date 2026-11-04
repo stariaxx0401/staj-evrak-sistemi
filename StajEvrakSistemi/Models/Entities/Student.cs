@@ -13,6 +13,8 @@ public class Student : AppUser
     public string Bolum { get; set; } = "";
     public int OncekiStajGunSayisi { get; set; }
     public string Telefon { get; set; } = "";
+    public string Ek16TeslimYili { get; set; } = "";     
+    public string SaglikYardimiStatusu { get; set; } = "";
 
     // EF Core için, dışarıdan çağrılmasın diye private
     private Student() { }
