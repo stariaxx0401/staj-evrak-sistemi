@@ -14,4 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<AdminUser> Admins => Set<AdminUser>();
 
     public DbSet<LoginAttempt> LoginAttempts => Set<LoginAttempt>();
+    public DbSet<InternshipDocument> Documents => Set<InternshipDocument>();
+    public DbSet<ValidationReport> ValidationReports => Set<ValidationReport>();
+    public DbSet<ValidationIssue> ValidationIssues => Set<ValidationIssue>();
 }

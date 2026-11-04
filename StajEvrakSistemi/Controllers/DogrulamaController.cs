@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using StajEvrakSistemi.Models.Entities;
+using Microsoft.AspNetCore.Mvc;
 using StajEvrakSistemi.Models;
 using StajEvrakSistemi.Validators;
 
@@ -7,6 +8,32 @@ namespace StajEvrakSistemi.Controllers;
 public class DogrulamaController: Controller
 
 {
+    // geçici test: durum akışı kurallarını deniyoruz, sonra silinecek
+    public IActionResult TestDurum()
+    {
+        var d = new InternshipDocument();
+        var sonuc = new List<string> { $"Başlangıç: {d.Status}" };
+
+        d.ChangeStatus(DocumentStatus.Inceleniyor);
+        d.ChangeStatus(DocumentStatus.Onaylandi);
+        d.ChangeStatus(DocumentStatus.Tamamlandi);
+        sonuc.Add($"Akış sonu: {d.Status}");
+
+        // tamamlanmış belgeyi öğrenci değiştirmeye çalışıyor
+        try { d.ChangeStatus(DocumentStatus.Yuklendi); }
+        catch (InvalidOperationException e) { sonuc.Add("Öğrenci denemesi: " + e.Message); }
+
+        // admin değiştirebiliyor
+        d.ChangeStatus(DocumentStatus.Yuklendi, adminMi: true);
+        sonuc.Add($"Admin değiştirdi: {d.Status}");
+
+        // akışı atlamaya çalışmak
+        var d2 = new InternshipDocument();
+        try { d2.ChangeStatus(DocumentStatus.Onaylandi); }
+        catch (InvalidOperationException e) { sonuc.Add("Atlama denemesi: " + e.Message); }
+
+        return Content(string.Join("\n", sonuc));
+    }
     public IActionResult Index()
     {
         var ogrenci = new DogrulamaOgrenci
