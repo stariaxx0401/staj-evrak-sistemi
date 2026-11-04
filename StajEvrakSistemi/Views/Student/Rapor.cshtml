@@ -1,0 +1,24 @@
+﻿@model StajEvrakSistemi.Models.Entities.ValidationReport
+
+<h2>Kontrol Raporu</h2>
+<p>Belge durumu: <b>@Model.Document!.Status</b></p>
+
+@if (Model.Issues.Count == 0)
+{
+    <div class="alert alert-success">Tüm kontroller başarıyla geçti.</div>
+}
+else
+{
+    <div class="alert alert-danger">@Model.Issues.Count sorun bulundu. Düzeltip belgeyi yeniden yükleyin.</div>
+    <table class="table table-bordered">
+        <thead><tr><th>Alan</th><th>Sorun</th></tr></thead>
+        <tbody>
+            @foreach (var sorun in Model.Issues)
+            {
+                <tr><td>@sorun.FieldName</td><td>@sorun.Message</td></tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a asp-action="EvrakYukle" class="btn btn-primary">Yeniden yükle</a>

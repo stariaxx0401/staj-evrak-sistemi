@@ -1,24 +1,33 @@
-﻿<h2>Ek-16 Yükle</h2>
+﻿@model StajEvrakSistemi.Models.EvrakYukleViewModel
+
+<h2>Ek-16 Yükle</h2>
 
 <div class="row">
-    <div class="col-md-6">
-        @* enctype="multipart/form-data": dosya göndermek için şart, yoksa dosya sunucuya gelmiyor *@
+    <div class="col-md-7">
+        @* enctype="multipart/form-data": dosya göndermek için şart *@
         <form method="post" enctype="multipart/form-data">
+            @* hata mesajları burada çıkıyor *@
+            <div asp-validation-summary="All" class="text-danger mb-2"></div>
+
             <div class="mb-3">
                 <label class="form-label">Ek-16 belgesi (Word, PDF, JPEG veya PNG)</label>
-
-                @* name="dosya": Kişi 2'nin yazacağı metottaki parametre adıyla aynı olmalı *@
-                @* accept: dosya seçme penceresinde sadece bu türleri gösteriyor, asıl kontrolü sunucu yapacak *@
-                <input type="file" name="dosya" class="form-control"
-                       accept=".doc,.docx,.pdf,.jpg,.jpeg,.png" required />
+                <input asp-for="Dosya" class="form-control" accept=".doc,.docx,.pdf,.jpg,.jpeg,.png" />
             </div>
-            <button type="submit" class="btn btn-primary">Evrak Yükle</button>
-        </form>
 
-        @* sunucudan gelen hata ya da bilgi mesajı burada gösterilecek *@
-        @if (TempData["Mesaj"] != null)
-        {
-            <div class="alert alert-info mt-3">@TempData["Mesaj"]</div>
-        }
+            <h5>Belgede yazan bilgiler</h5>
+            <div class="mb-2"><label class="form-label">Ad Soyad</label><input asp-for="AdSoyad" class="form-control" /></div>
+            <div class="mb-2"><label class="form-label">TC / Yabancı kimlik no</label><input asp-for="TcKimlikNo" class="form-control" /></div>
+            <div class="mb-2"><label class="form-label">Uyruk (T.C. veya Yabancı)</label><input asp-for="Uyruk" class="form-control" /></div>
+            <div class="mb-2"><label class="form-label">Öğretim yılı ve yarıyıl (örn. 2025-2026 Bahar)</label><input asp-for="OgretimYili" class="form-control" /></div>
+            <div class="mb-2"><label class="form-label">Staj başlangıç tarihi</label><input asp-for="StajBaslangic" class="form-control" /></div>
+            <div class="mb-2"><label class="form-label">Staj bitiş tarihi</label><input asp-for="StajBitis" class="form-control" /></div>
+            <div class="mb-2"><label class="form-label">Telefon (+90 xxx xxx xx xx)</label><input asp-for="Telefon" class="form-control" /></div>
+            <div class="mb-2"><label class="form-label">E-posta</label><input asp-for="Eposta" class="form-control" /></div>
+            <div class="mb-2"><label class="form-label">Adres</label><input asp-for="Adres" class="form-control" /></div>
+            <div class="mb-2"><label class="form-label">Mühendis sayısı</label><input asp-for="MuhendisSayisi" class="form-control" /></div>
+            <div class="mb-3"><label class="form-label">Mühendisin mezun olduğu bölüm (5'ten azsa zorunlu)</label><input asp-for="MuhendisBolumu" class="form-control" /></div>
+
+            <button type="submit" class="btn btn-primary">Yükle ve Kontrol Et</button>
+        </form>
     </div>
 </div>
