@@ -26,11 +26,28 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @* menüye yeni sayfaların bağlantıları, rol bazlı gizleme sonra eklenecek *@
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Student" asp-action="Index">Öğrenci</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Giriş</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Çıkış</a></li>
+                       
+                  
+                        @* admin bağlantısı sadece admine, öğrenci bağlantısı sadece öğrenciye görünüyor *@
+                        @if (User.IsInRole("ROLE_ADMIN"))
+                        {
+                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin</a></li>
+                        }
+                        @if (User.IsInRole("ROLE_STUDENT"))
+                        {
+                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Student" asp-action="Index">Öğrenci</a></li>
+                        }
+
+                        @* giriş yapmış kişi Çıkış, yapmamış kişi Giriş bağlantısını görüyor *@
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Çıkış</a></li>
+                        }
+                        else
+                        {
+                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Giriş</a></li>
+                        }
+
                     </ul>
                 </div>
             </div>
