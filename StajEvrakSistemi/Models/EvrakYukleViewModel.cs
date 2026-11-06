@@ -20,4 +20,6 @@ public class EvrakYukleViewModel
     public string? Adres { get; set; }
     public int? MuhendisSayisi { get; set; }
     public string? MuhendisBolumu { get; set; }
+    public List<DayOfWeek> HaftalikGunler { get; set; } = new();
+    public int? BelgedekiGunSayisi { get; set; }
 }

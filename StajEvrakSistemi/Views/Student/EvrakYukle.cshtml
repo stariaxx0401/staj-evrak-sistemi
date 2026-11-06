@@ -26,8 +26,24 @@
             <div class="mb-2"><label class="form-label">Adres</label><input asp-for="Adres" class="form-control" /></div>
             <div class="mb-2"><label class="form-label">Mühendis sayısı</label><input asp-for="MuhendisSayisi" class="form-control" /></div>
             <div class="mb-3"><label class="form-label">Mühendisin mezun olduğu bölüm (5'ten azsa zorunlu)</label><input asp-for="MuhendisBolumu" class="form-control" /></div>
+            
+            <div class="mb-2">
+                <label class="form-label">Haftalık staj günleri</label><br />
+                @* value'lar DayOfWeek adlarıyla aynı olmalı, model bağlama bu adlara bakıyor *@
+                <label class="me-2"><input type="checkbox" name="HaftalikGunler" value="Monday" /> Pzt</label>
+                <label class="me-2"><input type="checkbox" name="HaftalikGunler" value="Tuesday" /> Sal</label>
+                <label class="me-2"><input type="checkbox" name="HaftalikGunler" value="Wednesday" /> Çar</label>
+                <label class="me-2"><input type="checkbox" name="HaftalikGunler" value="Thursday" /> Per</label>
+                <label class="me-2"><input type="checkbox" name="HaftalikGunler" value="Friday" /> Cum</label>
+                <label class="me-2"><input type="checkbox" name="HaftalikGunler" value="Saturday" /> Cmt</label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Belgede yazan toplam staj günü</label>
+                <input asp-for="BelgedekiGunSayisi" class="form-control" />
+            </div>
 
             <button type="submit" class="btn btn-primary">Yükle ve Kontrol Et</button>
+
         </form>
     </div>
 </div>
