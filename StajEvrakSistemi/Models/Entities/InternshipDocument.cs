@@ -29,6 +29,9 @@ public class InternshipDocument
     public string Adres { get; set; } = "";
     public int MuhendisSayisi { get; set; }
     public string MuhendisBolumu { get; set; } = "";
+    public string HaftalikGunler { get; set; } = "";
+    public int BelgedekiGunSayisi { get; set; }
+    public int HesaplananGunSayisi { get; set; }
 
     // durumu değiştirir, akışa uymayan geçişleri engeller
     public void ChangeStatus(DocumentStatus yeni, bool adminMi = false)
