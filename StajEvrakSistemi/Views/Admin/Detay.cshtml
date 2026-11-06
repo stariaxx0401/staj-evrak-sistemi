@@ -1,0 +1,23 @@
+﻿@model StajEvrakSistemi.Models.Entities.ValidationReport
+
+<h2>Belge Raporu</h2>
+<p>Öğrenci: <b>@Model.Document!.OgrenciAdSoyad</b> | Durum: <b>@Model.Document.Status</b></p>
+
+@if (Model.Issues.Count == 0)
+{
+    <div class="alert alert-success">Tüm kontroller geçti.</div>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead><tr><th>Alan</th><th>Sorun</th></tr></thead>
+        <tbody>
+            @foreach (var s in Model.Issues)
+            {
+                <tr><td>@s.FieldName</td><td>@s.Message</td></tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a asp-action="Basvurular" class="btn btn-secondary">Listeye dön</a>
