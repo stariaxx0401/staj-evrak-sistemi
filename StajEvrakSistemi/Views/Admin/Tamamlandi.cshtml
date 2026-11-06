@@ -1,2 +1,24 @@
-﻿@* tamamlanan başvurular burada listelenecek *@
+﻿@model List<StajEvrakSistemi.Models.Entities.InternshipDocument>
+
 <h2>Tamamlanan Başvurular</h2>
+
+@if (TempData["Mesaj"] != null)
+{
+    <div class="alert alert-info">@TempData["Mesaj"]</div>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr><th>Öğrenci</th><th>Tamamlanma</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td>@b.OgrenciAdSoyad</td>
+                <td>@(b.CompletedAt?.ToString("dd.MM.yyyy HH:mm"))</td>
+                <td><a asp-action="Detay" asp-route-id="@b.Id" class="btn btn-sm btn-outline-primary">Rapor</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

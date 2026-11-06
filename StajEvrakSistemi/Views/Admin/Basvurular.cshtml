@@ -1,0 +1,54 @@
+﻿@model List<StajEvrakSistemi.Models.Entities.InternshipDocument>
+
+<h2>Başvurular</h2>
+
+@if (TempData["Mesaj"] != null)
+{
+    <div class="alert alert-info">@TempData["Mesaj"]</div>
+}
+
+@* durum ve ad/TC aramasına göre filtreleme *@
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="durum" class="form-select">
+            <option value="">Tüm durumlar</option>
+            <option value="Yuklendi">Yüklendi</option>
+            <option value="Inceleniyor">İnceleniyor</option>
+            <option value="HataliEksik">Hatalı / Eksik</option>
+            <option value="Onaylandi">Onaylandı</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <input name="ara" value="@ViewBag.Ara" class="form-control" placeholder="Ad soyad veya TC" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Filtrele</button>
+    </div>
+</form>
+
+<table class="table table-bordered">
+    <thead>
+        <tr><th>Öğrenci</th><th>Yüklenme</th><th>Durum</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td>@b.OgrenciAdSoyad</td>
+                <td>@b.UploadedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>@b.Status</td>
+                <td>
+                    <a asp-action="Detay" asp-route-id="@b.Id" class="btn btn-sm btn-outline-primary">Rapor</a>
+
+                    @* sadece onaylanmış belgede Tamamla düğmesi çıkıyor *@
+                    @if (b.Status == StajEvrakSistemi.Models.Entities.DocumentStatus.Onaylandi)
+                    {
+                        <form asp-action="Tamamla" asp-route-id="@b.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-success">Tamamla</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table> 

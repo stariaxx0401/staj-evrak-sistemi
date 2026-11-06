@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StajEvrakSistemi.Data;
@@ -17,7 +18,7 @@ public class AdminController : Controller
     {
         _db = db;
     }
-
+     
     public IActionResult Index() => View();
 
     // veri seti yükleme sayfası
@@ -136,5 +137,68 @@ public class AdminController : Controller
         return RedirectToAction("VeriSeti");
     }
 
-    public IActionResult Tamamlandi() => View();
+    // tüm başvurular (Tamamlandı olanlar ayrı sekmede), isteğe bağlı durum ve arama filtresi
+    public IActionResult Basvurular(string? durum, string? ara)
+    {
+        var sorgu = _db.Documents.Include(d => d.Student)
+            .Where(d => d.Status != DocumentStatus.Tamamlandi);
+
+        if (!string.IsNullOrWhiteSpace(durum) && Enum.TryParse<DocumentStatus>(durum, out var secilen))
+            sorgu = sorgu.Where(d => d.Status == secilen);
+
+        if (!string.IsNullOrWhiteSpace(ara))
+            sorgu = sorgu.Where(d => d.OgrenciAdSoyad.Contains(ara) || d.TcKimlikNo.Contains(ara));
+
+        ViewBag.Ara = ara;
+        return View(sorgu.OrderByDescending(d => d.UploadedAt).ToList());
+    }
+
+    // tamamlanan başvurular, ayrı sekmede listeleniyor
+    public IActionResult Tamamlandi()
+    {
+        var liste = _db.Documents.Include(d => d.Student)
+            .Where(d => d.Status == DocumentStatus.Tamamlandi)
+            .OrderByDescending(d => d.CompletedAt)
+            .ToList();
+        return View(liste);
+    }
+
+    // bir belgenin kontrol raporunu admin görüyor
+    public IActionResult Detay(int id)
+    {
+        var rapor = _db.ValidationReports
+            .Include(r => r.Issues)
+            .Include(r => r.Document)
+            .Where(r => r.DocumentId == id)
+            .OrderByDescending(r => r.Id)
+            .FirstOrDefault();
+
+        if (rapor == null)
+            return NotFound();
+
+        return View(rapor);
+    }
+
+    // Onaylandı durumundaki belgeyi Tamamlandı yapıyor
+    [HttpPost]
+    public IActionResult Tamamla(int id)
+    {
+        var belge = _db.Documents.FirstOrDefault(d => d.Id == id);
+        if (belge == null)
+            return NotFound();
+
+        // sadece onaylanmış belge tamamlanabilir
+        if (belge.Status != DocumentStatus.Onaylandi)
+        {
+            TempData["Mesaj"] = "Sadece Onaylandı durumundaki belge tamamlanabilir.";
+            return RedirectToAction("Basvurular");
+        }
+
+        belge.ChangeStatus(DocumentStatus.Tamamlandi);
+        _db.SaveChanges();
+
+        TempData["Mesaj"] = "Belge Tamamlandı durumuna alındı.";
+        return RedirectToAction("Tamamlandi");
+    }
+
 }
