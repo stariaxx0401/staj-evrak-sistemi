@@ -65,6 +65,9 @@ namespace StajEvrakSistemi.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("BelgedekiGunSayisi")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("TEXT");
 
@@ -79,6 +82,13 @@ namespace StajEvrakSistemi.Migrations
                     b.Property<string>("FileType")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<string>("HaftalikGunler")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("HesaplananGunSayisi")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("MuhendisBolumu")
                         .IsRequired()

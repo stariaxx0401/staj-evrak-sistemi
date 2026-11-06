@@ -72,7 +72,13 @@ public class StudentController : Controller
             Eposta = model.Eposta ?? "",
             Adres = model.Adres ?? "",
             MuhendisSayisi = model.MuhendisSayisi ?? 0,
-            MuhendisBolumu = model.MuhendisBolumu ?? ""
+            MuhendisBolumu = model.MuhendisBolumu ?? "",
+            OgretimYili = model.OgretimYili ?? "",
+            StajBaslangic = model.StajBaslangic,
+            StajBitis = model.StajBitis,
+            TeslimTarihi = DateTime.Today,
+            HaftalikGunler = model.HaftalikGunler ?? new List<DayOfWeek>(),
+            BelgedekiGunSayisi = model.BelgedekiGunSayisi ?? 0
         };
 
         // hepsi BaseValidator, döngüde aynı Validate çağrılıyor (çok biçimlilik)
@@ -82,7 +88,10 @@ public class StudentController : Controller
             ("Telefon", new TelefonValidator()),
             ("E-posta", new EpostaValidator()),
             ("Adres", new AdresValidator()),
-            ("Mühendis", new MuhendisValidator())
+            ("Mühendis", new MuhendisValidator()),
+            ("Öğretim yılı", new OgretimYiliValidator()),
+            ("Teslim tarihi", new TeslimTarihiValidator()),
+            ("Staj günü", new StajGunValidator())
         };
 
         foreach (var (alan, dogrulayici) in kontroller)
@@ -93,8 +102,6 @@ public class StudentController : Controller
         }
 
         // basit tarih kontrolleri (30 gün ve staj günü kuralları sonra gelecek)
-        if (string.IsNullOrWhiteSpace(model.OgretimYili))
-            sorunlar.Add(("Öğretim yılı", "Öğretim yılı girilmelidir (örn. 2025-2026 Bahar)."));
         if (model.StajBaslangic == null || model.StajBitis == null)
             sorunlar.Add(("Staj tarihleri", "Staj başlangıç ve bitiş tarihi girilmelidir."));
         else if (model.StajBitis < model.StajBaslangic)
@@ -124,7 +131,13 @@ public class StudentController : Controller
             Eposta = model.Eposta ?? "",
             Adres = model.Adres ?? "",
             MuhendisSayisi = model.MuhendisSayisi ?? 0,
-            MuhendisBolumu = model.MuhendisBolumu ?? ""
+            MuhendisBolumu = model.MuhendisBolumu ?? "",
+            HaftalikGunler = string.Join(",", model.HaftalikGunler ?? new List<DayOfWeek>()),
+            BelgedekiGunSayisi = model.BelgedekiGunSayisi ?? 0,
+            HesaplananGunSayisi = (model.StajBaslangic != null && model.StajBitis != null)
+            ? StajGunHesaplayici.Hesapla(model.StajBaslangic.Value, model.StajBitis.Value,
+                                         model.HaftalikGunler ?? new List<DayOfWeek>())
+            : 0
         };
 
         // Yüklendi → İnceleniyor
